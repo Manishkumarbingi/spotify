@@ -14,7 +14,21 @@ function secondsToMinutesSeconds(seconds) {
 }
 async function get_songs(folder) {
     currfolder = folder;
-    let a = await fetch(`https://api.github.com/repos/Manishkumarbingi/spotify/contents/${folder}`)
+    
+    let a = await fetch(`https://api.github.com/repos/Manishkumarbingi/spotify/contents/${folder}`, {
+  headers: {
+    Authorization: `token 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`,
+  },
+})
+.then(response => response.json())
+.then(data => {
+  // Handle the response data
+  console.log(data);
+})
+.catch(error => {
+  // Handle any errors
+  console.error(error);
+});
     let response = await a.text()
     let div = document.createElement("div")
     div.innerHTML = response;
