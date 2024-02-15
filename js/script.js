@@ -14,7 +14,7 @@ function secondsToMinutesSeconds(seconds) {
 }
 async function get_songs(folder) {
     currfolder = folder;
-    let a = await fetch(`https://manishkumarbingi.github.io/spotify/${folder}/`)
+    let a = await fetch(`/${folder}/`)
     let response = await a.text()
     let div = document.createElement("div")
     div.innerHTML = response;
@@ -68,7 +68,7 @@ const play_music = (track, pause = false) => {
     document.querySelector(".song_time").innerHTML = "00:00 / 00:00"
 }
 async function display_albums() {
-    let a = await fetch(`https://manishkumarbingi.github.io/spotify/songs/`)
+    let a = await fetch(`/songs/`)
     let response = await a.text()
     let div = document.createElement("div")
     div.innerHTML = response;
@@ -83,7 +83,7 @@ async function display_albums() {
             let folder = e.href.split("/").slice(-1)[0]
             //getting meta dat of the folder
 
-            let a = await fetch(`https://manishkumarbingi.github.io/spotify/${folder}/info.json`)
+            let a = await fetch(`/${folder}/info.json`)
             let response = await a.json()
             card_container.innerHTML = card_container.innerHTML + `
            <div data-folder="${folder}" class="card">
