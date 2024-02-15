@@ -68,7 +68,7 @@ const play_music = (track, pause = false) => {
     document.querySelector(".song_time").innerHTML = "00:00 / 00:00"
 }
 async function display_albums() {
-    let a = await fetch(`http://127.0.0.1:5500/songs/`)
+    let a = await fetch(`/songs/`)
     let response = await a.text()
     let div = document.createElement("div")
     div.innerHTML = response;
@@ -83,7 +83,7 @@ async function display_albums() {
             let folder = e.href.split("/").slice(-1)[0]
             //getting meta dat of the folder
 
-            let a = await fetch(`http://127.0.0.1:5500/songs/${folder}/info.json`)
+            let a = await fetch(`/${folder}/info.json`)
             let response = await a.json()
             card_container.innerHTML = card_container.innerHTML + `
            <div data-folder="${folder}" class="card">
