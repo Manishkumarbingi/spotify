@@ -14,21 +14,7 @@ function secondsToMinutesSeconds(seconds) {
 }
 async function get_songs(folder) {
     currfolder = folder;
-    
-    let a = await fetch(`https://api.github.com/repos/Manishkumarbingi/spotify/contents/${folder}`, {
-  headers: {
-    Authorization: `token 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`,
-  },
-})
-.then(response => response.json())
-.then(data => {
-  // Handle the response data
-  console.log(data);
-})
-.catch(error => {
-  // Handle any errors
-  console.error(error);
-});
+    let a = await fetch(`http://127.0.0.1:5500/${folder}/`)
     let response = await a.text()
     let div = document.createElement("div")
     div.innerHTML = response;
@@ -82,7 +68,7 @@ const play_music = (track, pause = false) => {
     document.querySelector(".song_time").innerHTML = "00:00 / 00:00"
 }
 async function display_albums() {
-    let a = await fetch(`/songs/`)
+    let a = await fetch(`http://127.0.0.1:5500/songs/`)
     let response = await a.text()
     let div = document.createElement("div")
     div.innerHTML = response;
@@ -97,7 +83,7 @@ async function display_albums() {
             let folder = e.href.split("/").slice(-1)[0]
             //getting meta dat of the folder
 
-            let a = await fetch(`/${folder}/info.json`)
+            let a = await fetch(`http://127.0.0.1:5500/songs/${folder}/info.json`)
             let response = await a.json()
             card_container.innerHTML = card_container.innerHTML + `
            <div data-folder="${folder}" class="card">
