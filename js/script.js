@@ -55,7 +55,7 @@ async function get_songs(folder) {
 }
 const play_music = (track, pause = false) => {
     // let audio=new Audio("/songs/"+track+".mp3")
-    current_song.src = `/${currfolder}/` + track + ".mp3"
+    current_song.src = `/spotify/${currfolder}/` + track + ".mp3"
     if (!pause) {
         current_song.play()
         play.src = "img/pause.svg"
@@ -105,7 +105,7 @@ async function display_albums() {
     //loading playlists
     Array.from(document.getElementsByClassName("card")).forEach(e => {
         e.addEventListener("click", async item => {
-            get_songs(`/spotify/songs/${item.currentTarget.dataset.folder}`)
+            get_songs(`songs/${item.currentTarget.dataset.folder}`)
             
         })
     })
@@ -150,7 +150,7 @@ async function display_albums() {
 }
 async function main() {
 
-    await get_songs("spotify/songs/ncs")
+    await get_songs("songs/ncs")
     play_music(songs[0].replace(".mp3", ""), true);
 
     //displaying albums
