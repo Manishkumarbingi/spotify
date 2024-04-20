@@ -147,9 +147,6 @@ async function display_albums() {
         document.querySelector(".circle").style.left = percent + "%";
         current_song.currentTime = ((current_song.duration) * percent) / 100
     })
-
-    
-    
 }
 async function main() {
 
