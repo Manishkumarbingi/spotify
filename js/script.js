@@ -105,7 +105,7 @@ async function display_albums() {
     //loading playlists
     Array.from(document.getElementsByClassName("card")).forEach(e => {
         e.addEventListener("click", async item => {
-            get_songs(`songs/${item.currentTarget.dataset.folder}`)
+            get_songs(`/spotify/songs/${item.currentTarget.dataset.folder}`)
             
         })
     })
@@ -150,7 +150,7 @@ async function display_albums() {
 }
 async function main() {
 
-    await get_songs("songs/ncs")
+    await get_songs("spotify/songs/ncs")
     play_music(songs[0].replace(".mp3", ""), true);
 
     //displaying albums
