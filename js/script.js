@@ -95,7 +95,7 @@ async function display_albums() {
                        stroke-line-join="round" />
                </svg>
            </div>
-           <img src="/${coverUrl}/" alt="">
+           <img src="${coverUrl}" alt="">
            <h2>${response.title}</h2>
            <p>${response.discription}</p>
            </div>`
