@@ -94,7 +94,7 @@ async function display_albums() {
                        stroke-line-join="round" />
                </svg>
            </div>
-           <img src="/songs/${folder}/cover.jpg" alt="">
+           <img src="/spotify/songs/${folder}/cover.jpg" alt="">
            <h2>${response.title}</h2>
            <p>${response.discription}</p>
            </div>`
