@@ -95,7 +95,9 @@ async function display_albums() {
                        stroke-line-join="round" />
                </svg>
            </div>
-           <img src="${coverUrl}" alt="">
+            let img = document.createElement("img"); // Create a new image element
+            img.src = ${coverUrl}; 
+           
            <h2>${response.title}</h2>
            <p>${response.discription}</p>
            </div>`
