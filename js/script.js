@@ -83,7 +83,7 @@ async function display_albums() {
             // Getting meta data of the folder
             let a = await fetch(`http://127.0.0.1:5500/songs/${folder}/info.json`);
             let response = await a.json();
-            let coverUrl = `https://raw.githubusercontent.com/Manishkumarbingi/spotify/main/songs/${folder}/cover.jpg`;
+            let coverUrl = `https://raw.githubusercontent.com/manishkumarbingi/manishkumarbingi.github.io/main/songs/${folder}/cover.jpg`;
             card_container.innerHTML += `
            <div data-folder="${folder}" class="card">
            <div class="play">
@@ -100,6 +100,7 @@ async function display_albums() {
         }
     }
 }
+
     
     //loading playlists
     Array.from(document.getElementsByClassName("card")).forEach(e => {
