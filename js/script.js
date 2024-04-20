@@ -104,7 +104,7 @@ async function display_albums() {
             card_container.appendChild(card);
         }
     }
-}
+
     
     //loading playlists
     Array.from(document.getElementsByClassName("card")).forEach(e => {
