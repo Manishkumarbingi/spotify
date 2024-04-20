@@ -70,6 +70,7 @@ const play_music = (track, pause = false) => {
 async function display_albums() {
     let a = await fetch(`http://127.0.0.1:5500/songs/`)
     let response = await a.text()
+    
     let div = document.createElement("div")
     div.innerHTML = response;
     let anchors = div.getElementsByTagName("a")
@@ -97,7 +98,7 @@ async function display_albums() {
                </svg>
            </div>
            
-           <img src="/b/cover.jpg" alt="">
+           <img src="/${b}/cover.jpg" alt="">
            <h2>${response.title}</h2>
            <p>${response.discription}</p>
            </div>`
