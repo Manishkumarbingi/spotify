@@ -68,23 +68,24 @@ const play_music = (track, pause = false) => {
     document.querySelector(".song_time").innerHTML = "00:00 / 00:00"
 }
 async function display_albums() {
-    let a = await fetch(`http://127.0.0.1:5500/songs/`);
-    let response = await a.text();
-    let div = document.createElement("div");
+    let a = await fetch(`http://127.0.0.1:5500/songs/`)
+    let response = await a.text()
+    let div = document.createElement("div")
     div.innerHTML = response;
-    let anchors = div.getElementsByTagName("a");
-    let card_container = document.querySelector(".card_container");
-    let array = Array.from(anchors);
+    let anchors = div.getElementsByTagName("a")
+    let card_container = document.querySelector(".card_container")
+    let array = Array.from(anchors)
     for (let index = 0; index < array.length; index++) {
         const e = array[index];
 
+
         if (e.href.includes("/songs/")) {
-            let folder = e.href.split("/").slice(-1)[0];
-            // Getting meta data of the folder
-            let a = await fetch(`http://127.0.0.1:5500/songs/${folder}/info.json`);
-            let response = await a.json();
-            let coverUrl = `https://raw.githubusercontent.com/manishkumarbingi/manishkumarbingi.github.io/main/songs/${folder}/cover.jpg`;
-            card_container.innerHTML += `
+            let folder = e.href.split("/").slice(-1)[0]
+            //getting meta dat of the folder
+
+            let a = await fetch(`http://127.0.0.1:5500/songs/${folder}/info.json`)
+            let response = await a.json()
+            card_container.innerHTML = card_container.innerHTML + `
            <div data-folder="${folder}" class="card">
            <div class="play">
                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -93,14 +94,12 @@ async function display_albums() {
                        stroke-line-join="round" />
                </svg>
            </div>
-           <img src="${coverUrl}" alt="">
+           <img src="/songs/${folder}/cover.jpg" alt="">
            <h2>${response.title}</h2>
            <p>${response.discription}</p>
-           </div>`;
+           </div>`
         }
     }
-}
-
     
     //loading playlists
     Array.from(document.getElementsByClassName("card")).forEach(e => {
