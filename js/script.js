@@ -85,6 +85,8 @@ async function display_albums() {
 
             let a = await fetch(`http://127.0.0.1:5500/songs/${folder}/info.json`)
             let response = await a.json()
+            let b = await fetch(`http://127.0.0.1:5500/songs/${folder}`)
+            let res = await b.text()
             card_container.innerHTML = card_container.innerHTML + `
            <div data-folder="${folder}" class="card">
            <div class="play">
@@ -94,7 +96,7 @@ async function display_albums() {
                        stroke-line-join="round" />
                </svg>
            </div>
-           <img src="/songs/${folder}/cover.jpg" alt="">
+           <img src="/${res}/cover.jpg" alt="">
            <h2>${response.title}</h2>
            <p>${response.discription}</p>
            </div>`
