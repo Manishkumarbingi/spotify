@@ -80,29 +80,31 @@ async function display_albums() {
 
 
         if (e.href.includes("/songs/")) {
-            let folder = e.href.split("/").slice(-1)[0]
-            //getting meta dat of the folder
-
-            let a = await fetch(`http://127.0.0.1:5500/songs/${folder}/info.json`)
-            let response = await a.json()
+            let folder = e.href.split("/").slice(-1)[0];
+            // Getting meta data of the folder
+            let a = await fetch(`http://127.0.0.1:5500/songs/${folder}/info.json`);
+            let response = await a.json();
             let coverUrl = `https://raw.githubusercontent.com/Manishkumarbingi/spotify/main/songs/${folder}/cover.jpg`;
-            card_container.innerHTML = card_container.innerHTML + `
-           <div data-folder="${folder}" class="card">
-           <div class="play">
-               <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                   xmlns="http://www.w3.org/2000/svg">
-                   <path d="M5 20V4L19 12L5 20Z" fill="#000" stroke="#141834" stroke-width="1.5"
-                       stroke-line-join="round" />
-               </svg>
-           </div>
-            let img = document.createElement("img"); // Create a new image element
-            img.src = ${coverUrl}; 
-           
-           <h2>${response.title}</h2>
-           <p>${response.discription}</p>
-           </div>`
+
+            let card = document.createElement("div");
+            card.setAttribute("data-folder", folder);
+            card.classList.add("card");
+            card.innerHTML = `
+                <div class="play">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 20V4L19 12L5 20Z" fill="#000" stroke="#141834" stroke-width="1.5"
+                            stroke-line-join="round" />
+                    </svg>
+                </div>
+                <img src="${coverUrl}" alt="">
+                <h2>${response.title}</h2>
+                <p>${response.discription}</p>
+            `;
+            card_container.appendChild(card);
         }
     }
+}
     
     //loading playlists
     Array.from(document.getElementsByClassName("card")).forEach(e => {
