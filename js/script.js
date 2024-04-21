@@ -53,7 +53,6 @@ async function get_songs(folder) {
    
     
 }
-
 const play_music = (track, pause = false) => {
     // let audio=new Audio("/songs/"+track+".mp3")
     current_song.src = `/spotify/${currfolder}/` + track + ".mp3"
