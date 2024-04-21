@@ -14,21 +14,21 @@ function secondsToMinutesSeconds(seconds) {
 }
 async function get_songs(folder) {
     currfolder = folder;
-    let a = await fetch(`https://manishkumarbingi.github.io/spotify/${folder}/`);
-    let response = await a.text();
-    let div = document.createElement("div");
+    let a = await fetch(`http://127.0.0.1:5500/${folder}/`)
+    let response = await a.text()
+    let div = document.createElement("div")
     div.innerHTML = response;
-    let as = div.getElementsByTagName("a");
-    songs = [];
+    let as = div.getElementsByTagName("a")
+    songs = []
     for (let index = 0; index < as.length; index++) {
         const element = as[index];
         if (element.href.endsWith(".mp3")) {
-            songs.push(element.href.split(`/${folder}/`)[1]);
+            songs.push(element.href.split(`/${folder}/`)[1])
         }
     }
     
-    let song_ul = document.querySelector(".song_list").getElementsByTagName("ul")[0];
-    song_ul.innerHTML = "";
+    let song_ul = document.querySelector(".song_list").getElementsByTagName("ul")[0]
+    song_ul.innerHTML = ""
     for (const song of songs) {
         song_ul.innerHTML = song_ul.innerHTML + `<li> 
         <img class="invert music" src="img/music.svg" alt="">
@@ -45,10 +45,13 @@ async function get_songs(folder) {
     
     Array.from(document.querySelector(".song_list").getElementsByTagName("li")).forEach(e => {
         e.addEventListener("click", element => {
-            play_music(e.querySelector(".info").firstElementChild.innerHTML.trim());
-        });
-    });
+            play_music(e.querySelector(".info").firstElementChild.innerHTML.trim())
+        })
+    })
     play_music(songs[0].replace(".mp3", "").replaceAll("%20"," "),true);
+    
+   
+    
 }
 
 const play_music = (track, pause = false) => {
