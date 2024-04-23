@@ -14,17 +14,8 @@ function secondsToMinutesSeconds(seconds) {
 }
 async function get_songs(folder) {
     currfolder = folder;
-    try {
-        let a = await fetch(`/${folder}/`);
-        if (!a.ok) {
-            throw new Error(`Failed to fetch ${folder}: ${a.statusText}`);
-        }
-        let response = await a.text();
-        // Process the response here
-        console.log(response);
-    } catch (error) {
-        console.error('Error:', error.message);
-    }
+    let a = await fetch(`http://127.0.0.1:5500/${folder}/`)
+    let response = await a.text()
 
     let div = document.createElement("div")
     div.innerHTML = response;
