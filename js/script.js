@@ -14,8 +14,18 @@ function secondsToMinutesSeconds(seconds) {
 }
 async function get_songs(folder) {
     currfolder = folder;
-    let a = await fetch(`/${folder}/`)
-    let response = await a.text()
+    try {
+        let a = await fetch(`/${folder}/`);
+        if (!a.ok) {
+            throw new Error(`Failed to fetch ${folder}: ${a.statusText}`);
+        }
+        let response = await a.text();
+        // Process the response here
+        console.log(response);
+    } catch (error) {
+        console.error('Error:', error.message);
+    }
+
     let div = document.createElement("div")
     div.innerHTML = response;
     let as = div.getElementsByTagName("a")
