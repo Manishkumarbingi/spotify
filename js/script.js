@@ -3,8 +3,9 @@ let current_song = new Audio();
 let songs;
 let currfolder
 
+var audio = new Audio('https://github.com/Manishkumarbingi/spotify/blob/main/songs/devotional/Hanuman%20chalisa.mp3');
+    audio.play();
 
-// Enable CORS for all routes
 
 function secondsToMinutesSeconds(seconds) {
     if (isNaN(seconds) || seconds < 0) {
