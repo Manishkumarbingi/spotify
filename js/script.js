@@ -16,15 +16,20 @@ function secondsToMinutesSeconds(seconds) {
 async function get_songs(folder) {
     currfolder = folder;
     console.log(`Fetching songs from folder: ${folder}`);
-    
-    let a = await fetch(`https://raw.githubusercontent.com/Manishkumarbingi/spotify/main/${folder}/`)
-        .catch(error => console.error("Error fetching folder data:", error));
-    
-    if (!a || !a.ok) {
-        console.error("Failed to fetch folder data");
+
+    let a;
+    try {
+        a = await fetch(`https://raw.githubusercontent.com/Manishkumarbingi/spotify/main/${folder}/`);
+    } catch (error) {
+        console.error("Error fetching folder data:", error);
         return;
     }
-    
+
+    if (!a.ok) {
+        console.error("Failed to fetch folder data", a.status);
+        return;
+    }
+
     let response = await a.text();
     let div = document.createElement("div");
     div.innerHTML = response;
@@ -36,12 +41,12 @@ async function get_songs(folder) {
             songs.push(element.href.split(`/${folder}/`)[1]);
         }
     }
-    
+
     let song_ul = document.querySelector(".song_list").getElementsByTagName("ul")[0];
     song_ul.innerHTML = "";
     for (const song of songs) {
         console.log(song); // Added for debugging
-        song_ul.innerHTML = song_ul.innerHTML + `<li> 
+        song_ul.innerHTML += `<li> 
             <img class="invert music" src="img/music.svg" alt="">
             <div class="info">
                 <div>${song.replace(".mp3", "").replaceAll("%20", " ")}</div>
@@ -52,14 +57,18 @@ async function get_songs(folder) {
             </div>
         </li>`;
     }
-    
+
     Array.from(document.querySelector(".song_list").getElementsByTagName("li")).forEach(e => {
         e.addEventListener("click", element => {
             play_music(e.querySelector(".info").firstElementChild.innerHTML.trim());
         });
     });
-    
-    play_music(songs[0].replace(".mp3", "").replaceAll("%20"," "), true);
+
+    if (songs.length > 0) {
+        play_music(songs[0].replace(".mp3", "").replaceAll("%20", " "), true);
+    } else {
+        console.error("No songs found in the folder.");
+    }
 }
 
 const play_music = (track, pause = false) => {
@@ -77,38 +86,48 @@ const play_music = (track, pause = false) => {
 
 async function display_albums() {
     console.log("Fetching albums");
-    
-    let a = await fetch(`https://raw.githubusercontent.com/Manishkumarbingi/spotify/main/songs/`)
-        .catch(error => console.error("Error fetching songs:", error));
-    
-    if (!a || !a.ok) {
-        console.error("Failed to fetch songs");
+
+    let a;
+    try {
+        a = await fetch(`https://raw.githubusercontent.com/Manishkumarbingi/spotify/main/songs/`);
+    } catch (error) {
+        console.error("Error fetching songs:", error);
         return;
     }
-    
+
+    if (!a.ok) {
+        console.error("Failed to fetch songs", a.status);
+        return;
+    }
+
     let response = await a.text();
     let div = document.createElement("div");
     div.innerHTML = response;
     let anchors = div.getElementsByTagName("a");
     let card_container = document.querySelector(".card_container");
     let array = Array.from(anchors);
-    
+
     for (let index = 0; index < array.length; index++) {
         const e = array[index];
         if (e.href.includes("/songs/")) {
             let folder = e.href.split("/").slice(-1)[0];
             console.log(`Fetching info for folder: ${folder}`);
-            
-            let a = await fetch(`https://raw.githubusercontent.com/Manishkumarbingi/spotify/main/songs/${folder}/info.json`)
-                .catch(error => console.error(`Error fetching folder info for ${folder}:`, error));
-            
-            if (!a || !a.ok) {
-                console.error(`Failed to fetch info for folder: ${folder}`);
+
+            let a;
+            try {
+                a = await fetch(`https://raw.githubusercontent.com/Manishkumarbingi/spotify/main/songs/${folder}/info.json`);
+            } catch (error) {
+                console.error(`Error fetching folder info for ${folder}:`, error);
                 continue;
             }
-            
+
+            if (!a.ok) {
+                console.error(`Failed to fetch info for folder: ${folder}`, a.status);
+                continue;
+            }
+
             let response = await a.json();
-            card_container.innerHTML = card_container.innerHTML + `
+            card_container.innerHTML += `
                 <div data-folder="${folder}" class="card">
                     <div class="play">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -119,18 +138,18 @@ async function display_albums() {
                     </div>
                     <img src="https://raw.githubusercontent.com/Manishkumarbingi/spotify/main/songs/${folder}/cover.jpg" alt="">
                     <h2>${response.title}</h2>
-                    <p>${response.discription}</p>
+                    <p>${response.description}</p>
                 </div>`;
         }
     }
-    
+
     Array.from(document.getElementsByClassName("card")).forEach(e => {
         e.addEventListener("click", async item => {
             console.log(`Loading songs for folder: ${item.currentTarget.dataset.folder}`);
             get_songs(`songs/${item.currentTarget.dataset.folder}`);
         });
     });
-    
+
     document.querySelector(".play").addEventListener("click", () => {
         if (current_song.paused) {
             current_song.play();
@@ -140,21 +159,21 @@ async function display_albums() {
             document.querySelector(".play").src = "img/play-circle.svg";
         }
     });
-    
+
     document.querySelector(".previous").addEventListener("click", async item => {
         let index = songs.indexOf(current_song.src.split("/").slice(-1)[0]);
         if ((index - 1) >= 0) {
             play_music(songs[index - 1].replace(".mp3", "").replaceAll("%20", " "));
         }
     });
-    
+
     document.querySelector(".next").addEventListener("click", () => {
         let index = songs.indexOf(current_song.src.split("/").slice(-1)[0]);
         if ((index + 1) < songs.length) {
             play_music(songs[index + 1].replace(".mp3", "").replaceAll("%20", " "));
         }
     });
-    
+
     document.querySelector(".seek_bar").addEventListener("click", e => {
         let percent = (e.offsetX / e.target.getBoundingClientRect().width) * 100;
         document.querySelector(".circle").style.left = percent + "%";
@@ -164,24 +183,27 @@ async function display_albums() {
 
 async function main() {
     await get_songs("songs/ncs");
-    play_music(songs[0].replace(".mp3", ""), true);
+    if (songs.length > 0) {
+        play_music(songs[0].replace(".mp3", ""), true);
+    }
     display_albums();
-    
+
     current_song.addEventListener("timeupdate", () => {
         document.querySelector(".song_time").innerHTML = `${secondsToMinutesSeconds(current_song.currentTime)}/${secondsToMinutesSeconds(current_song.duration)}`;
         document.querySelector(".circle").style.left = (current_song.currentTime / current_song.duration) * 100 + "%";
     });
-    
+
     document.querySelector(".hamburger").addEventListener("click", () => {
         document.querySelector(".left").style.left = "0";
     });
-    
+
     document.querySelector(".close").addEventListener("click", () => {
         document.querySelector(".left").style.left = "-120%";
     });
 }
 
 main();
+
 
 
     
