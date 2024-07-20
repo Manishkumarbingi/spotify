@@ -33,6 +33,7 @@ async function get_songs(folder) {
         song_ul.innerHTML = song_ul.innerHTML + `<li> 
         <img class="invert music" src="img/music.svg" alt="">
         <div class="info">
+        console.log(song)
             <div>${song.replace(".mp3", "").replaceAll("%20", " ")}</div>
             <div>Manish</div>
         </div>
