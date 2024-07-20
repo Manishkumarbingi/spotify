@@ -3,8 +3,6 @@ let current_song = new Audio();
 let songs;
 let currfolder
 
-var audio = new Audio('https://github.com/Manishkumarbingi/spotify/blob/main/songs/devotional/Hanuman%20chalisa.mp3');
-    audio.play();
 
 
 function secondsToMinutesSeconds(seconds) {
