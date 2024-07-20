@@ -14,9 +14,8 @@ function secondsToMinutesSeconds(seconds) {
 }
 async function get_songs(folder) {
     currfolder = folder;
-    let a = await fetch(`http://127.0.0.1:5500/${folder}/`)
+    let a = await fetch(`http://127.0.0.1:5500/spotify/${folder}/`)
     let response = await a.text()
-
     let div = document.createElement("div")
     div.innerHTML = response;
     let as = div.getElementsByTagName("a")
@@ -49,6 +48,7 @@ async function get_songs(folder) {
             play_music(e.querySelector(".info").firstElementChild.innerHTML.trim())
         })
     })
+    
     play_music(songs[0].replace(".mp3", "").replaceAll("%20"," "),true);
     
    
@@ -56,6 +56,7 @@ async function get_songs(folder) {
 }
 const play_music = (track, pause = false) => {
     // let audio=new Audio("/songs/"+track+".mp3")
+    
     current_song.src = `/spotify/${currfolder}/` + track + ".mp3"
     if (!pause) {
         current_song.play()
@@ -69,7 +70,7 @@ const play_music = (track, pause = false) => {
     document.querySelector(".song_time").innerHTML = "00:00 / 00:00"
 }
 async function display_albums() {
-    let a = await fetch(`http://127.0.0.1:5500/songs/`)
+    let a = await fetch(`http://127.0.0.1:5500/spotify/songs/`)
     let response = await a.text()
     let div = document.createElement("div")
     div.innerHTML = response;
@@ -84,8 +85,10 @@ async function display_albums() {
             let folder = e.href.split("/").slice(-1)[0]
             //getting meta dat of the folder
 
-            let a = await fetch(`http://127.0.0.1:5500/songs/${folder}/info.json`)
+            let a = await fetch(`http://127.0.0.1:5500/spotify/songs/${folder}/info.json`)
+            
             let response = await a.json()
+            
             card_container.innerHTML = card_container.innerHTML + `
            <div data-folder="${folder}" class="card">
            <div class="play">
@@ -101,7 +104,6 @@ async function display_albums() {
            </div>`
         }
     }
-
     
     //loading playlists
     Array.from(document.getElementsByClassName("card")).forEach(e => {
@@ -148,6 +150,9 @@ async function display_albums() {
         document.querySelector(".circle").style.left = percent + "%";
         current_song.currentTime = ((current_song.duration) * percent) / 100
     })
+
+    
+    
 }
 async function main() {
 
@@ -175,6 +180,11 @@ async function main() {
     })
     
     
+
+    
+
+}
+main(); 
 
     
 
