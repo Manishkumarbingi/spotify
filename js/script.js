@@ -70,7 +70,7 @@ const play_music = (track, pause = false) => {
     document.querySelector(".song_time").innerHTML = "00:00 / 00:00"
 }
 async function display_albums() {
-    let a = await fetch(`http://127.0.0.1:5500/spotify/songs/`)
+    let a = await fetch(`https://raw.githubusercontent.com/Manishkumarbingi/spotify/songs/`)
     let response = await a.text()
     let div = document.createElement("div")
     div.innerHTML = response;
