@@ -166,7 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (prevButton) {
-            prevButton.addEventListener("click", async () => {
+            prevButton.addEventListener("click", () => {
                 let index = songs.indexOf(current_song.src.split("/").slice(-1)[0]);
                 if ((index - 1) >= 0) {
                     play_music(songs[index - 1].replace(".mp3", "").replaceAll("%20", " "));
