@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const play_music = (track, pause = false) => {
         current_song.src = `https://raw.githubusercontent.com/Manishkumarbingi/spotify/main/${currfolder}/` + track + ".mp3";
-        const playButton = document.querySelector(".play");
+        const playButton = document.getElementById("play");
         if (playButton) {
             if (!pause) {
                 current_song.play();
@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
 
-        const playButton = document.querySelector(".play");
+        const playButton = document.getElementById("play");
         if (playButton) {
             playButton.addEventListener("click", () => {
                 if (current_song.paused) {
@@ -162,7 +162,7 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Play button not found.");
         }
 
-        const previousButton = document.querySelector(".previous");
+        const previousButton = document.getElementById("previous");
         if (previousButton) {
             previousButton.addEventListener("click", () => {
                 let index = songs.indexOf(current_song.src.split("/").slice(-1)[0]);
@@ -174,7 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Previous button not found.");
         }
 
-        const nextButton = document.querySelector(".next");
+        const nextButton = document.getElementById("next");
         if (nextButton) {
             nextButton.addEventListener("click", () => {
                 let index = songs.indexOf(current_song.src.split("/").slice(-1)[0]);
