@@ -1,6 +1,4 @@
-import { myFunction } from './myModule.js';
 
-myFunction();
 let current_song = new Audio();
 let songs;
 let currfolder
