@@ -19,7 +19,7 @@ async function get_songs(folder) {
 
     let a;
     try {
-        a = await fetch(`https://raw.githubusercontent.com/Manishkumarbingi/spotify/main/${folder}/`);
+        a = await fetch(`https://api.github.com/repos/Manishkumarbingi/spotify/contents/${folder}`);
     } catch (error) {
         console.error("Error fetching folder data:", error);
         return;
@@ -30,17 +30,8 @@ async function get_songs(folder) {
         return;
     }
 
-    let response = await a.text();
-    let div = document.createElement("div");
-    div.innerHTML = response;
-    let as = div.getElementsByTagName("a");
-    songs = [];
-    for (let index = 0; index < as.length; index++) {
-        const element = as[index];
-        if (element.href.endsWith(".mp3")) {
-            songs.push(element.href.split(`/${folder}/`)[1]);
-        }
-    }
+    let response = await a.json();
+    songs = response.filter(file => file.name.endsWith('.mp3')).map(file => file.name);
 
     let song_ul = document.querySelector(".song_list").getElementsByTagName("ul")[0];
     song_ul.innerHTML = "";
@@ -89,7 +80,7 @@ async function display_albums() {
 
     let a;
     try {
-        a = await fetch(`https://raw.githubusercontent.com/Manishkumarbingi/spotify/main/songs/`);
+        a = await fetch(`https://api.github.com/repos/Manishkumarbingi/spotify/contents/songs`);
     } catch (error) {
         console.error("Error fetching songs:", error);
         return;
@@ -100,33 +91,29 @@ async function display_albums() {
         return;
     }
 
-    let response = await a.text();
-    let div = document.createElement("div");
-    div.innerHTML = response;
-    let anchors = div.getElementsByTagName("a");
+    let response = await a.json();
     let card_container = document.querySelector(".card_container");
-    let array = Array.from(anchors);
 
-    for (let index = 0; index < array.length; index++) {
-        const e = array[index];
-        if (e.href.includes("/songs/")) {
-            let folder = e.href.split("/").slice(-1)[0];
+    for (let index = 0; index < response.length; index++) {
+        const e = response[index];
+        if (e.type === 'dir') {
+            let folder = e.name;
             console.log(`Fetching info for folder: ${folder}`);
 
-            let a;
+            let info;
             try {
-                a = await fetch(`https://raw.githubusercontent.com/Manishkumarbingi/spotify/main/songs/${folder}/info.json`);
+                let infoResponse = await fetch(`https://raw.githubusercontent.com/Manishkumarbingi/spotify/main/songs/${folder}/info.json`);
+                if (infoResponse.ok) {
+                    info = await infoResponse.json();
+                } else {
+                    console.error(`Failed to fetch info for folder: ${folder}`, infoResponse.status);
+                    continue;
+                }
             } catch (error) {
                 console.error(`Error fetching folder info for ${folder}:`, error);
                 continue;
             }
 
-            if (!a.ok) {
-                console.error(`Failed to fetch info for folder: ${folder}`, a.status);
-                continue;
-            }
-
-            let response = await a.json();
             card_container.innerHTML += `
                 <div data-folder="${folder}" class="card">
                     <div class="play">
@@ -137,8 +124,8 @@ async function display_albums() {
                         </svg>
                     </div>
                     <img src="https://raw.githubusercontent.com/Manishkumarbingi/spotify/main/songs/${folder}/cover.jpg" alt="">
-                    <h2>${response.title}</h2>
-                    <p>${response.description}</p>
+                    <h2>${info.title}</h2>
+                    <p>${info.description}</p>
                 </div>`;
         }
     }
@@ -203,7 +190,6 @@ async function main() {
 }
 
 main();
-
 
 
     
