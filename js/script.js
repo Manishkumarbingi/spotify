@@ -5,7 +5,7 @@ let currfolder
 
 
 // Enable CORS for all routes
-app.use(cors());
+
 function secondsToMinutesSeconds(seconds) {
     if (isNaN(seconds) || seconds < 0) {
         return "00:00"
