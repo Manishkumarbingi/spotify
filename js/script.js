@@ -148,6 +148,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         const playButton = document.getElementById("play");
+        const prevButton = document.getElementById("previous");
+        const nextButton = document.getElementById("next");
+
         if (playButton) {
             playButton.addEventListener("click", () => {
                 if (current_song.paused) {
@@ -162,9 +165,8 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Play button not found.");
         }
 
-        const previousButton = document.getElementById("previous");
-        if (previousButton) {
-            previousButton.addEventListener("click", () => {
+        if (prevButton) {
+            prevButton.addEventListener("click", async () => {
                 let index = songs.indexOf(current_song.src.split("/").slice(-1)[0]);
                 if ((index - 1) >= 0) {
                     play_music(songs[index - 1].replace(".mp3", "").replaceAll("%20", " "));
@@ -174,7 +176,6 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Previous button not found.");
         }
 
-        const nextButton = document.getElementById("next");
         if (nextButton) {
             nextButton.addEventListener("click", () => {
                 let index = songs.indexOf(current_song.src.split("/").slice(-1)[0]);
@@ -216,7 +217,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.querySelector(".left").style.left = "0";
             });
         } else {
-            console.error("Hamburger menu button not found.");
+            console.error("Hamburger button not found.");
         }
 
         const closeButton = document.querySelector(".close");
