@@ -179,8 +179,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (nextButton) {
             nextButton.addEventListener("click", () => {
                 let index = songs.indexOf(current_song.src.split("/").slice(-1)[0]);
+                console.log(index);
                 if ((index + 1) < songs.length) {
                     play_music(songs[index + 1].replace(".mp3", "").replaceAll("%20", " "));
+                    console.log(songs[index + 1].replace(".mp3", "").replaceAll("%20", " "));
                 }
             });
         } else {
